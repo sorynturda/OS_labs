@@ -1,0 +1,1 @@
+echo "sunt `ls | wc -l` elemente si `ls -d */ | wc -l` directoare"

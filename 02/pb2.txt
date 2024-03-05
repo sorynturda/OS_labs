@@ -1,0 +1,3 @@
+cat file.txt | grep -v text1 | grep -v text2
+
+cat file.txt | grep -v "text1\|text2"
