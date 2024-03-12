@@ -57,9 +57,9 @@ struct student_vector *student_vector_create()
 int student_vector_add(struct student_vector *student_vector, struct student *student)
 {
     if (student_vector->capacity == student_vector->count) {
+        struct student **old_students = student_vector->students;
         struct student **new_students;
         int i;
-
         new_students = (struct student**)malloc((2 * student_vector->capacity) * sizeof(struct student*));
         if (NULL == new_students) {
             return FALSE;
@@ -69,6 +69,7 @@ int student_vector_add(struct student_vector *student_vector, struct student *st
         }
         student_vector->capacity *= 2;
         student_vector->students = new_students;
+        free(old_students);
     }
     student_vector->students[student_vector->count] = student;
     student_vector->count += 1;
@@ -81,19 +82,28 @@ int student_vector_remove(struct student_vector *student_vector, int index)
     if (index < 0 || index >= student_vector->count) {
         return FALSE;
     }
+    struct student *student = student_vector->students[index];
     student_vector->count -= 1;
     for (i = index; i < student_vector->count; i += 1) {
         student_vector->students[i] = student_vector->students[i + 1];
     }
+    free(student->name);
+    free(student->surname);
+    free(student);
     return TRUE;
 }
 
-void student_vector_free(struct student_vector **student_vector) {
-    for (int i = 0; i < (*student_vector)->count; i++) {
-        free((*student_vector[i])->students[i]->surname);
-        free(student_vector[i]->students[i]->name);
-        free(student_vector[i]->students[i]);
+void student_vector_free(struct student_vector *student_vector) {
+    for (int i = 0; i < student_vector->capacity; i++) {
+        if (i < student_vector->count) {
+            free(student_vector->students[i]->surname);
+            free(student_vector->students[i]->name);
+            free(student_vector->students[i]);
+        }
+        // if (student_vector->students[i] != NULL)
     }
+    free(student_vector->students);
+    free(student_vector);
 }
 
 int main()
@@ -123,8 +133,8 @@ int main()
         }
         // exit
         if ('e' == command[0] && 'x' == command[1] && 'i' == command[2] && 't' == command[3] && '\x00' == command[4]) {
-            student_vector_free(&student_vector);
-            free(student_vector);
+            student_vector_free(student_vector);
+            free(command);
             return 0;
         }
         // list
@@ -179,5 +189,7 @@ int main()
         else {
             printf("ERROR! Bad command: %s\n", command);
         }
+        if (NULL != command)
+            free(command);
     }
 }
