@@ -54,7 +54,9 @@ int main(int argc, char **argv) {
     for (int NR_THREADS = 1; NR_THREADS < MAX_THREADS; NR_THREADS++) {
         int cnt = 0, th_cnt;
         char buff[100];
+
         begin = clock();
+
         for (int i = 0; i < NR_THREADS; i++) {
             params[i].pos = i + 1;
             params[i].n = n;
@@ -67,6 +69,7 @@ int main(int argc, char **argv) {
             th_cnt = (int)(long)result;
             cnt += th_cnt;
         }
+        
         end = clock();
         time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
         snprintf(buff, 100, "THREADS: %d\n time_spent: %lf\n\n", NR_THREADS, time_spent);
