@@ -18,20 +18,20 @@ int listDir(const char *path)
     }
     while((entry = readdir(dir)) != NULL) {
         snprintf(filePath, 512, "%s/%s", path, entry->d_name);
-        if(lstat(filePath, &statbuf) == 0) {
-            if(S_ISREG(statbuf.st_mode)) {
-                printf("[reg] ");
-            } else if(S_ISDIR(statbuf.st_mode)) {
-                printf("[dir] ");
-            } else if(S_ISLNK(statbuf.st_mode)) {
-                printf("[lnk] ");
-            } else {
-                printf("[unk] ");
-            }
-            printf("[%o] ", statbuf.st_mode & 0777);
-        } else {
-            printf("[err] ");
-        }
+        // if(lstat(filePath, &statbuf) == 0) {
+        //     if(S_ISREG(statbuf.st_mode)) {
+        //         printf("[reg] ");
+        //     } else if(S_ISDIR(statbuf.st_mode)) {
+        //         printf("[dir] ");
+        //     } else if(S_ISLNK(statbuf.st_mode)) {
+        //         printf("[lnk] ");
+        //     } else {
+        //         printf("[unk] ");
+        //     }
+        //     printf("[%o] ", statbuf.st_mode & 0777);
+        // } else {
+        //     printf("[err] ");
+        // }
         printf("%s\n", entry->d_name);
     }
     closedir(dir);

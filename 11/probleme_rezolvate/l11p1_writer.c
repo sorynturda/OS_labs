@@ -25,8 +25,8 @@ int main(void)
     }
     printf("Writing value %d to FIFO\n", x);
     write(fd, &x, sizeof(x));
+    write(fd, &x, sizeof(x));
     close(fd);
-
     //delete fifo
     unlink(FIFO_NAME);
 

@@ -18,6 +18,7 @@ int main(void)
         return 1;
     }
     read(fd, &x, sizeof(x));
+    read(fd, &x, sizeof(x));
     printf("The read value is: %d\n", x);
     close(fd);
 
